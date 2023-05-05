@@ -129,6 +129,7 @@ import {
 } from "./userListRedux";
 import { getEmailFailure, getEmailStart, getEmailSuccess, getPageEmail } from "./emailRedux";
 import { getFirstNameFailure, getFirstNameStart, getFirstNameSuccess, getPageFirstName } from "./fNameRedux.js";
+import axios from "axios";
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
@@ -322,7 +323,19 @@ export const getCategories = async (dispatch, configuration, page) => {
     dispatch(getCategoryFailure());
   }
 };
-
+export const fetchCategory = async (dispatch, id) => {
+  dispatch(getCategoryStart());
+  try {
+    const res = await axios.get(
+      `http://localhost:8000/api/v1/user/units/a/categories/${id}`
+    
+    );
+    // console.log(res.data.body);
+    dispatch(getCategorySuccess(res.data.body));
+  } catch (err) {
+    dispatch(getCategoryFailure());
+  }
+};
 export const getTypes = async (dispatch, configuration, type, page) => {
   dispatch(getTypeStart());
   try {
