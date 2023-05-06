@@ -8,21 +8,21 @@ export const sliderItems = [
     img: img1,
     title: "بهترین رستوران ها",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
-    bg: "fcf1ed",
+    bg: "FFF8DC",
   },
   {
     id: 2,
     img: img2,
     title: "هتل",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
-    bg: "ffe6ff",
+    bg: "FFF8DC",
   },
   {
     id: 3,
     img: img3,
     title: "تعمیرات",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
-    bg: "fbf0f4",
+    bg: "FFF8DC",
   },
 ];
 

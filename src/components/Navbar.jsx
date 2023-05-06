@@ -1,8 +1,14 @@
-import React from "react";
+import * as React from 'react';
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { Search, ShoppingCartOutlined } from "@material-ui/icons";
 import { Badge } from "@material-ui/core";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Fade from "@mui/material/Fade";
+import { Link } from "react-router-dom";
+
 const Container = styled.div`
   z-index: 10000;
   position: fixed;
@@ -10,7 +16,7 @@ const Container = styled.div`
   width: 100%;
   height: 60px;
   background-color: white;
-  ${mobile({ height: "150px"})}
+  ${mobile({ height: "150px" })}
 `;
 
 const Wrapper = styled.div`
@@ -26,8 +32,6 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   color: #959180;
-  
-  
 `;
 
 const Language = styled.span`
@@ -43,18 +47,17 @@ const SearchContainer = styled.div`
   margin-left: 25px;
   padding: 5px;
   border-radius: 8px;
- 
 `;
 
 const Input = styled.input`
   border: none;
-  ${mobile({ width: "100px" , marginLeft: "40px"})}
+  ${mobile({ width: "100px", marginLeft: "40px" })}
 `;
 
 const Center = styled.div`
   flex: 1;
   text-align: center;
-  ${mobile({  margin: "40px 0px"})}
+  ${mobile({ margin: "40px 0px" })}
 `;
 
 const Logo = styled.h1`
@@ -71,7 +74,7 @@ const Right = styled.div`
   ${mobile({ flex: 2, justifyContent: "center" })}
 `;
 
-const MenuItem = styled.div`
+const MenuItems = styled.div`
   font-size: 14px;
   cursor: pointer;
   margin-left: 25px;
@@ -80,6 +83,14 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <Container>
       <Wrapper>
@@ -94,13 +105,37 @@ const Navbar = () => {
           <Logo>koocha website</Logo>
         </Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
-          <MenuItem>
+          <Button
+          style={{color: "black"}}
+            id="fade-button"
+            aria-controls={open ? "fade-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
+            Categories
+          </Button>
+          <Menu
+            id="fade-menu"
+            MenuListProps={{
+              "aria-labelledby": "fade-button",
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            TransitionComponent={Fade}
+          >
+            <MenuItem onClick={handleClose}><Link to={"/categories/" + "مشاغل"} style={{ textDecoration: "none" , color: "black"}}>Jobs</Link></MenuItem>
+            <MenuItem onClick={handleClose}><Link to={"/categories/" + "جوامع"} style={{ textDecoration: "none" , color: "black"}}>Societies</Link></MenuItem>
+            <MenuItem onClick={handleClose}><Link to={"/categories/" + "all"} style={{ textDecoration: "none" , color: "black"}}>All</Link></MenuItem>
+          </Menu>
+          <MenuItems>REGISTER</MenuItems>
+          <MenuItems>SIGN IN</MenuItems>
+          {/* <MenuItems>
             <Badge badgeContent={4} color="secondary">
               <ShoppingCartOutlined />
             </Badge>
-          </MenuItem>
+          </MenuItems> */}
         </Right>
       </Wrapper>
     </Container>

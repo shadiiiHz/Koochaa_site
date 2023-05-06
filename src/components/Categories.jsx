@@ -8,15 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 const Container = styled.div`
   display: flex;
-  padding: 20px;
+  padding: 10px;
   justify-content: space-between;
+  margin-bottom: 40px;
   ${mobile({ padding: "0px", flexDirection: "column" , marginTop: "60px" , alignItems: "center"})}
 `;
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
 
-  const categoryId = [58, 41, 40, 39];
+  const categoryId = [58, 41, 40, 39, 15 , 16];
   useEffect(() => {
     categoryId.map((id) => {
       axios

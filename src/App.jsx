@@ -7,18 +7,16 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import Categories from "./components/Categories";
+import CategoryList from "./pages/CategoryList";
 import HomePage from "./pages/HomePage";
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />}>
-            {/* <Route index element={<Home />} />
-        <Route path="blogs" element={<Blogs />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="*" element={<NoPage />} /> */}
-          </Route>
+          <Route path="/" element={<HomePage />}/>
+          <Route path="/categories/:type" element={<CategoryList />}/>
         </Routes>
       </BrowserRouter>
     </>

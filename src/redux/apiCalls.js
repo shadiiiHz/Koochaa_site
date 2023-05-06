@@ -309,16 +309,25 @@ export const getCitiesByCountryId = async (dispatch, configuration, id) => {
   }
 };
 ///////////////category//////////////////////
-export const getCategories = async (dispatch, configuration, page) => {
+export const getCategories = async (dispatch, page) => {
   dispatch(getCategoryStart());
   try {
-    const res = await publicRequest2.get(
-      `/units/a/categories?page=${page}`,
-      configuration
-    );
-    // console.log(res.data.body.data);
-    dispatch(getCategorySuccess(res.data.body.data));
-    dispatch(getPageCategory(res.data.body.last_page));
+    if (page == 1) {
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/user/units/a/categories?page=1`
+      );
+      console.log(res.data.body.data);
+      dispatch(getCategorySuccess(res.data.body.data));
+      dispatch(getPageCategory(res.data.body.last_page));
+    } else {
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/user/units/a/categories?page=${page}`
+      
+      );
+      console.log(res.data.body.data);
+      dispatch(getCategorySuccess(res.data.body.data));
+      dispatch(getPageCategory(res.data.body.last_page));
+    }
   } catch (err) {
     dispatch(getCategoryFailure());
   }
@@ -336,23 +345,23 @@ export const fetchCategory = async (dispatch, id) => {
     dispatch(getCategoryFailure());
   }
 };
-export const getTypes = async (dispatch, configuration, type, page) => {
+export const getTypes = async (dispatch, type, page) => {
   dispatch(getTypeStart());
   try {
     if (page == 1) {
-      const res = await publicRequest2.get(
-        `/units/a/categories?type=${type}&page=1`,
-        configuration
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/user/units/a/categories?type=${type}&page=1`
+        
       );
-      console.log(res.data.body.data);
+      console.log(res.data.body.last_page);
       dispatch(getTypeSuccess(res.data.body.data));
       dispatch(getPageType(res.data.body.last_page));
     } else {
-      const res = await publicRequest2.get(
-        `/units/a/categories?type=${type}&page=${page}`,
-        configuration
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/user/units/a/categories?type=${type}&page=${page}`
+        
       );
-      console.log(res.data.body.data);
+      console.log(res.data.body.last_page);
       dispatch(getTypeSuccess(res.data.body.data));
       dispatch(getPageType(res.data.body.last_page));
     }

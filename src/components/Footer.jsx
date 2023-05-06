@@ -90,7 +90,7 @@ const Footer = () => {
   return (
     <Container>
       <Left>
-        <Logo>shopping website</Logo>
+        <Logo>koocha website</Logo>
         <Desc>
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure
           doloribus aspernatur sequi eligendi. Optio non voluptate qui,
