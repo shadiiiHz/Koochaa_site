@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import CategoryItem from "./CategoryItem";
-
+import { categories } from "../data";
 import { fetchCategory } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -15,23 +15,23 @@ const Container = styled.div`
 `;
 
 const Categories = () => {
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
 
-  const categoryId = [58, 41, 40, 39, 15 , 16];
-  useEffect(() => {
-    categoryId.map((id) => {
-      axios
-        .get(`http://localhost:8000/api/v1/user/units/a/categories/${id}`)
-        .then((response) => {
-          setCategories((prevArray) => [...prevArray, response.data.body]);
-        })
-        .catch((error) => {
-          // handle error
-        });
+  // const categoryId = [58, 41, 40, 39, 15 , 16];
+  // useEffect(() => {
+  //   categoryId.map((id) => {
+  //     axios
+  //       .get(`http://localhost:8000/api/v1/user/units/a/categories/${id}`)
+  //       .then((response) => {
+  //         setCategories((prevArray) => [...prevArray, response.data.body]);
+  //       })
+  //       .catch((error) => {
+  //         // handle error
+  //       });
 
-      // setCategories((prevArray) => [...prevArray, category]);
-    });
-  }, []);
+  //     // setCategories((prevArray) => [...prevArray, category]);
+  //   });
+  // }, []);
   return (
 
     <Container>

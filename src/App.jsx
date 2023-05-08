@@ -10,6 +10,7 @@ import {
 import Categories from "./components/Categories";
 import CategoryList from "./pages/CategoryList";
 import HomePage from "./pages/HomePage";
+import UnitList from "./pages/UnitList";
 function App() {
   return (
     <>
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />}/>
           <Route path="/categories/:type" element={<CategoryList />}/>
+          <Route path="/units/:Id" element={<UnitList />}/>
         </Routes>
       </BrowserRouter>
     </>

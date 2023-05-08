@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import ReactPaginate from "react-paginate";
-import { getCategories, getTypes } from "../redux/apiCalls";
+import { getCategorByTitle, getCategories, getTypes } from "../redux/apiCalls";
 import styled from "styled-components";
 import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
+import BackArrow from "../components/BackArrow";
+import { mobile } from "../responsive";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import Combobox from "react-widgets/Combobox";
 const PaginationStyle = styled.div`
   margin: 20px;
 `;
@@ -19,7 +23,7 @@ const Container = styled.div`
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: start;
 `;
 const Info = styled.div`
   opacity: 0;
@@ -37,10 +41,11 @@ const Info = styled.div`
   cursor: pointer;
 `;
 
-const Container2 = styled.div`
+const ContainerInfo = styled.div`
   flex: 1;
   margin: 5px;
   min-width: 280px;
+  max-width: 280px;
   height: 350px;
   display: flex;
   align-items: center;
@@ -108,18 +113,51 @@ const CategoryInfo = styled.h2`
   margin-bottom: 10px;
   font-size: 15px;
 `;
+const InputContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  ${mobile({ margin: "20px" })}
+`;
+const TopSearchIcon = styled.i`
+  flex: 0.5;
+  font-size: 18px;
+  color: #666;
+  cursor: pointer;
+  padding: 9px;
+`;
+const ProductInputInfo = styled.input`
+  border: none;
+  flex: 8.5;
+  width: 80%;
+  border-radius: 20px;
+  margin: 5px;
+  outline: none;
+`;
+const ProductInput = styled.div`
+  margin: 20px;
+  width: 50%;
+  height: 40px;
+  /* background-color: black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #e9967a;
+  border-radius: 20px;
+  flex: 1;
+  /* background-color: black; */
+  ${mobile({ margin: "20px" })}
+`;
 const CategoryList = () => {
   const location = useLocation();
   const type = location.pathname.split("/")[2];
-  console.log(type);
+  // console.log(type);
   const [pageCount, setpageCount] = useState(0);
   const [pageCount2, setpageCount2] = useState(0);
-  const [pageCount3, setpageCount3] = useState(0);
 
   const [page, setPage] = useState(1);
   const [page2, setPage2] = useState(1);
-  const [page3, setPage3] = useState(1);
 
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.categories);
@@ -127,19 +165,50 @@ const CategoryList = () => {
 
   const lastPage = useSelector((state) => state.category.lastPage);
   const lastPage2 = useSelector((state) => state.type.lastPage);
+
+  //search by title
+  const [value, setValue] = useState("");
   //   const lastPage3 = useSelector((state) => state.type.lastPage);
-  useEffect(() => {
-    if (type === "all") {
-      setpageCount(lastPage);
-      getCategories(dispatch, page);
-    }
-  }, [dispatch, page, type]);
+  // useEffect(() => {
+  //   if (type === "all" && !value) {
+  //     setpageCount(lastPage);
+  //     getCategories(dispatch, page);
+  //   }
+  // }, [dispatch, page, type,lastPage]);
   useEffect(() => {
     if (type != "all") {
       setpageCount2(lastPage2);
       getTypes(dispatch, type, page2);
     }
   }, [dispatch, page2, type, lastPage2]);
+
+  useEffect(() => {
+    if (type != "all") {
+      if (typeof value === "object") {
+        setpageCount(lastPage);
+        console.log(typeof value);
+        getCategorByTitle(dispatch, value.title, type, page);
+      } else {
+        setpageCount(lastPage);
+        // console.log(typeof(value))
+        getCategorByTitle(dispatch, value, type, page);
+      }
+    }
+  }, [dispatch, value, page, lastPage]);
+  // useEffect(() => {
+  //   if (type === "all" && value) {
+  //     if (typeof value === "object") {
+  //       setpageCount(lastPage);
+
+  //       getCategorByTitle(dispatch, value.title, "", page);
+  //     } else {
+  //       setpageCount(lastPage);
+  //       console.log(value);
+  //       getCategorByTitle(dispatch, value, "", page);
+  //     }
+  //   }
+  // }, [dispatch, value, page, lastPage]);
+
   const handlePageClick = async (data) => {
     let currentPage = data.selected + 1;
     setPage(currentPage);
@@ -152,15 +221,29 @@ const CategoryList = () => {
   //     let currentPage = data.selected + 1;
   //     setPage3(currentPage);
   //   };
+
   return (
     <>
       {/* <Navbar /> */}
       {/* <Announcement /> */}
+      <BackArrow />
+
+      <Combobox
+        style={{ width: "30%", margin: "auto" }}
+        data={categories}
+        textField="title"
+        value={value}
+        onChange={(value) => setValue(value)}
+        placeholder="Search for a title"
+      />
       <Container>
-        {type === "all" &&
+        {/* <pre>{JSON.stringify(categories)} </pre>  */}
+        {/* <pre>{JSON.stringify(value)} </pre>  */}
+        {type != "all" &&
+          value &&
           categories.map((category) => {
             return (
-              <Container2>
+              <ContainerInfo>
                 <Id>{category.id}</Id>
                 <Title> {category.title}</Title>
                 <LatinTitle>
@@ -169,17 +252,22 @@ const CategoryList = () => {
                 <CategoryInfo>type : {category.type}</CategoryInfo>
                 <Info>
                   <Icon>
-                    <SearchOutlined />
+                    <Link
+                      to={"/units/" + category.id}
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <SearchOutlined />
+                    </Link>
                   </Icon>
                   <Icon>
                     <FavoriteBorderOutlined />
                   </Icon>
                 </Info>
-              </Container2>
+              </ContainerInfo>
             );
           })}
       </Container>
-      {type === "all" && (
+      {type != "all" && value && (
         <PaginationStyle>
           <ReactPaginate
             previousLabel={"previous"}
@@ -202,11 +290,14 @@ const CategoryList = () => {
           />
         </PaginationStyle>
       )}
-      <Container>
-        {type != "all" &&
-          types.map((category) => {
+
+      {/* <Container>
+      
+        {type === "all" &&
+          value &&
+          categories.map((category) => {
             return (
-              <Container2>
+              <ContainerInfo>
                 <Id>{category.id}</Id>
                 <Title> {category.title}</Title>
                 <LatinTitle>
@@ -221,12 +312,112 @@ const CategoryList = () => {
                     <FavoriteBorderOutlined />
                   </Icon>
                 </Info>
-              </Container2>
+              </ContainerInfo>
+            );
+          })}
+      </Container> */}
+      {/* {type === "all" && value && (
+        <PaginationStyle>
+          <ReactPaginate
+            previousLabel={"previous"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={3}
+            onPageChange={handlePageClick}
+            containerClassName={"pagination justify-content-center"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            activeClassName={"active"}
+          />
+        </PaginationStyle>
+      )} */}
+
+      {/* <Container>
+        {type === "all" &&
+          !value &&
+          categories.map((category) => {
+            return (
+              <ContainerInfo>
+                <Id>{category.id}</Id>
+                <Title> {category.title}</Title>
+                <LatinTitle>
+                  {category.latin_title && category.latin_title}
+                </LatinTitle>
+                <CategoryInfo>type : {category.type}</CategoryInfo>
+                <Info>
+                  <Icon>
+                    <SearchOutlined />
+                  </Icon>
+                  <Icon>
+                    <FavoriteBorderOutlined />
+                  </Icon>
+                </Info>
+              </ContainerInfo>
+            );
+          })}
+      </Container> */}
+      {/* {type === "all" && !value && (
+        <PaginationStyle>
+          <ReactPaginate
+            previousLabel={"previous"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={3}
+            onPageChange={handlePageClick}
+            containerClassName={"pagination justify-content-center"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            activeClassName={"active"}
+          />
+        </PaginationStyle>
+      )} */}
+
+      <Container>
+        {type != "all" &&
+          !value &&
+          types.map((category) => {
+            return (
+              <ContainerInfo>
+                <Id>{category.id}</Id>
+                <Title> {category.title}</Title>
+                <LatinTitle>
+                  {category.latin_title && category.latin_title}
+                </LatinTitle>
+                <CategoryInfo>type : {category.type}</CategoryInfo>
+                <Info>
+                  <Icon>
+                    <Link
+                      to={"/units/" + category.id}
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <SearchOutlined />
+                    </Link>
+                  </Icon>
+                  <Icon>
+                    <FavoriteBorderOutlined />
+                  </Icon>
+                </Info>
+              </ContainerInfo>
             );
           })}
       </Container>
-
-      {type != "all" && (
+      {type != "all" && !value && (
         <PaginationStyle>
           <ReactPaginate
             previousLabel={"previous"}
@@ -249,54 +440,6 @@ const CategoryList = () => {
           />
         </PaginationStyle>
       )}
-      {/* <Container>
-        {type === "%D9%85%D8%B4%D8%A7%D8%BA%D9%84" &&
-          types.map((category) => {
-            return (
-              <Container2>
-                <Id>{category.id}</Id>
-                <Title> {category.title}</Title>
-                <LatinTitle>
-                  {category.latin_title && category.latin_title}
-                </LatinTitle>
-                <CategoryInfo>type : {category.type}</CategoryInfo>
-                <Info>
-                  <Icon>
-                    <SearchOutlined />
-                  </Icon>
-                  <Icon>
-                    <FavoriteBorderOutlined />
-                  </Icon>
-                </Info>
-              </Container2>
-            );
-          })}
-      </Container>
-
-      {type === "%D9%85%D8%B4%D8%A7%D8%BA%D9%84" && (
-        <PaginationStyle>
-          <ReactPaginate
-            previousLabel={"previous"}
-            nextLabel={"next"}
-            breakLabel={"..."}
-            pageCount={pageCount3}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={3}
-            onPageChange={handlePageClick3}
-            containerClassName={"pagination justify-content-center"}
-            pageClassName={"page-item"}
-            pageLinkClassName={"page-link"}
-            previousClassName={"page-item"}
-            previousLinkClassName={"page-link"}
-            nextClassName={"page-item"}
-            nextLinkClassName={"page-link"}
-            breakClassName={"page-item"}
-            breakLinkClassName={"page-link"}
-            activeClassName={"active"}
-          />
-        </PaginationStyle>
-      )} */}
-
       <Footer />
     </>
   );

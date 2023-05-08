@@ -9,6 +9,7 @@ import imgWed from "../images/pexels-agung-pandit-wiguna-2970287.jpg";
 import imgCar from "../images/pexels-iva-prime-2052939.jpg";
 import imgBeauty from "../images/pexels-cottonbro-studio-3993447.jpg";
 import imgTranslater from "../images/pexels-karolina-grabowska-5238117.jpg";
+import { categories } from "../data";
 const Container = styled.div`
   flex: 1;
   margin: 3px 60px 3px;
@@ -18,12 +19,12 @@ const Container = styled.div`
   position: relative;
   box-shadow: 0px 10px 13px 3px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-    ${mobile({
-      height: "30vh",
-      width: "40vw",
-      padding: "10px",
-      marginBottom: "30px",
-    })};
+  ${mobile({
+    height: "30vh",
+    width: "40vw",
+    padding: "10px",
+    marginBottom: "30px",
+  })};
 `;
 
 const Image = styled.img`
@@ -83,18 +84,18 @@ const CategoryItem = ({ item }) => {
 
   return (
     <Container>
-      {item.title === "رستوران" && <Image src={imgRes} />}
+      {/* {item.title === "رستوران" && <Image src={imgRes} />}
       {item.title === "جراح کودکان" && <Image src={imgSur} />}
       {item.title === "فروشگاه فرش" && <Image src={imgCar} />}
       {item.title === "تشریفات مجالس" && <Image src={imgWed} />}
       {item.title === "سالن زیبایی" && <Image src={imgBeauty} />}
-      {item.title === "مترجم رسمی" && <Image src={imgTranslater} />}
+      {item.title === "مترجم رسمی" && <Image src={imgTranslater} />} */}
+      {/* <Info>
+        <Title>{item.title}</Title>
+      </Info> */}
+      <Image src={item.img} />
       <Info>
         <Title>{item.title}</Title>
-
-        {/* <Link to={`/products/category=${item.title}`}>
-          <Button>More information</Button>
-        </Link> */}
       </Info>
     </Container>
   );

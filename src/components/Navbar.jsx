@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { Search, ShoppingCartOutlined } from "@material-ui/icons";
@@ -73,7 +73,37 @@ const Right = styled.div`
   justify-content: flex-end;
   ${mobile({ flex: 2, justifyContent: "center" })}
 `;
+const Suggestions = styled.div`
+  opacity: 0;
+  position: absolute;
+  top: 100%;
+  left: 30%;
+  right: 0;
 
+  background-color: white;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 8px #ddd;
+  padding: 3px;
+  margin-top: 0.5rem;
+  max-height: 300px;
+  font-family: "Vazir", sans-serif;
+  cursor: pointer;
+`;
+const Suggestion = styled.div`
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+
+  &:hover {
+    background-color: #fff8dc;
+  }
+`;
 const MenuItems = styled.div`
   font-size: 14px;
   cursor: pointer;
@@ -81,16 +111,24 @@ const MenuItems = styled.div`
 
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
-
+const SearchBar = styled.div`
+  &:hover ${Suggestions} {
+    opacity: 1;
+  }
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 const Navbar = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const open = Boolean(anchorEl);
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
   return (
     <Container>
       <Wrapper>
@@ -105,8 +143,8 @@ const Navbar = () => {
           <Logo>koocha website</Logo>
         </Center>
         <Right>
-          <Button
-          style={{color: "black"}}
+          {/* <Button
+            style={{ color: "black" }}
             id="fade-button"
             aria-controls={open ? "fade-menu" : undefined}
             aria-haspopup="true"
@@ -114,8 +152,8 @@ const Navbar = () => {
             onClick={handleClick}
           >
             Categories
-          </Button>
-          <Menu
+          </Button> */}
+          {/* <Menu
             id="fade-menu"
             MenuListProps={{
               "aria-labelledby": "fade-button",
@@ -125,12 +163,62 @@ const Navbar = () => {
             onClose={handleClose}
             TransitionComponent={Fade}
           >
-            <MenuItem onClick={handleClose}><Link to={"/categories/" + "مشاغل"} style={{ textDecoration: "none" , color: "black"}}>Jobs</Link></MenuItem>
-            <MenuItem onClick={handleClose}><Link to={"/categories/" + "جوامع"} style={{ textDecoration: "none" , color: "black"}}>Societies</Link></MenuItem>
-            <MenuItem onClick={handleClose}><Link to={"/categories/" + "all"} style={{ textDecoration: "none" , color: "black"}}>All</Link></MenuItem>
-          </Menu>
+            <MenuItem onClick={handleClose}>
+              <Link
+                to={"/categories/" + "مشاغل"}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                Jobs
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link
+                to={"/categories/" + "جوامع"}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                Societies
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link
+                to={"/categories/" + "all"}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                All
+              </Link>
+            </MenuItem>
+          </Menu> */}
           <MenuItems>REGISTER</MenuItems>
           <MenuItems>SIGN IN</MenuItems>
+          <SearchBar>
+            <MenuItems>CATEGORIES</MenuItems>
+            <Suggestions>
+              <Suggestion>
+                <Link
+                  to={"/categories/" + "مشاغل"}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  Jobs
+                </Link>
+              </Suggestion>
+              <Suggestion>
+                <Link
+                  to={"/categories/" + "جوامع"}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  Societies
+                </Link>
+              </Suggestion>
+              <Suggestion>
+                <Link
+                  to={"/units/" + "all"}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  All
+                </Link>
+              </Suggestion>
+            </Suggestions>
+          </SearchBar>
           {/* <MenuItems>
             <Badge badgeContent={4} color="secondary">
               <ShoppingCartOutlined />

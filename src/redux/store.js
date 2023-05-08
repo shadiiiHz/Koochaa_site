@@ -18,11 +18,7 @@ import cityRedux from "./cityRedux";
 import categoryRedux from "./categoryRedux";
 import typesRedux from "./typesRedux";
 import unitRedux from "./unitRedux";
-import logoRedux from "./logoRedux";
-import imageredux from "./imageRedux";
-import userListRedux from "./userListRedux";
-import emailRedux from "./emailRedux";
-import fNameRedux from "./fNameRedux.js";
+
 
 const persistConfig = {
   key: "root",
@@ -38,11 +34,8 @@ const rootReducer = combineReducers({
   category: categoryRedux,
   type: typesRedux,
   unit: unitRedux,
-  logo: logoRedux,
-  image: imageredux,
-  userList: userListRedux,
-  email: emailRedux,
-  firstName: fNameRedux,
+
+
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
