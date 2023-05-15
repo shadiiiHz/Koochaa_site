@@ -226,7 +226,7 @@ const CategoryList = () => {
     <>
       {/* <Navbar /> */}
       {/* <Announcement /> */}
-      <BackArrow />
+      <BackArrow item={"/"} />
 
       <Combobox
         style={{ width: "30%", margin: "auto" }}

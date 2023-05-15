@@ -13,7 +13,7 @@ const Container = styled.div`
   font-size: 25px;
   font-weight: 400;
   font-family: Vazirmatn, sans-serif;
-  ${mobile({ dsiplay: "none" })}
+  ${mobile({ height: "150px ",fontSize: "20px"})}
 `;
 
 const CategoryLable = () => {

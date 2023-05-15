@@ -23,7 +23,7 @@ const Container = styled.div`
     height: "30vh",
     width: "40vw",
     padding: "10px",
-    marginBottom: "30px",
+    marginBottom: "50px",
   })};
 `;
 
@@ -43,9 +43,8 @@ const Image = styled.img`
     -webkit-transform: scale(1.3);
     transform: scale(1.3);
   }
-  ${mobile({ height: "20vh" })}
+  ${mobile({ height: "20vh", })}
 `;
-
 const Info = styled.div`
   position: absolute;
 
@@ -56,7 +55,7 @@ const Info = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  ${mobile({ height: "33%" })}
+  ${mobile({ height: "55%" })}
 `;
 
 const Title = styled.h1`

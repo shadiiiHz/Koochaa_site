@@ -16,8 +16,8 @@ const Container = styled.div`
   ${mobile({ dsiplay: "none" })}
 `;
 
-const BackArrow = () => {
-  return <Link to="/" style={{ textDecoration: "none" , color: "black"}}><Container><ArrowBackIcon/></Container></Link>;
+const BackArrow = ({item}) => {
+  return <Link to={item} style={{ textDecoration: "none" , color: "black"}}><Container><ArrowBackIcon/></Container></Link>;
 };
 
 export default BackArrow;

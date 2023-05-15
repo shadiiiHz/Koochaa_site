@@ -163,9 +163,9 @@ const Product = ({ item }) => {
         {/* <Icon>
           <ShoppingCartOutlined />
         </Icon> */}
-        <Icon>
+        {/* <Icon>
           <SearchOutlined />
-        </Icon>
+        </Icon> */}
         <Icon>
           <FavoriteBorderOutlined />
         </Icon>

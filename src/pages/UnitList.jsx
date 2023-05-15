@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getByTitle, getUnits } from "../redux/apiCalls";
 import { mobile } from "../responsive";
@@ -22,6 +22,9 @@ import LanguageIcon from "@mui/icons-material/Language";
 import BackArrow from "../components/BackArrow";
 import Swal from "sweetalert2";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 const PaginationStyle = styled.div`
   margin: 20px;
 `;
@@ -63,18 +66,18 @@ const ContainerInfo = styled.div`
     opacity: 1;
   }
 `;
-
-const Circle = styled.div`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
+const NotFoundContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 50px;
 `;
-
-const Image = styled.img`
-  height: 75%;
-  z-index: 2;
+const NotFoundInfo = styled.h1`
+  color: black;
+  margin: 20px;
+  font-size: 18px;
+  font-family: Vazirmatn, sans-serif;
 `;
 
 const Icon = styled.div`
@@ -144,45 +147,23 @@ const Mobile = styled.h2`
   font-size: 13px;
 `;
 
-const InputContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  ${mobile({ margin: "20px" })}
-`;
-const TopSearchIcon = styled.i`
-  flex: 0.5;
-  font-size: 18px;
-  color: #666;
-  cursor: pointer;
-  padding: 9px;
-`;
-const ProductInputInfo = styled.input`
+const Button = styled.button`
+  width: 55px;
+  height: 55px;
   border: none;
-  flex: 8.5;
-  width: 80%;
-  border-radius: 20px;
-  margin: 5px;
-  outline: none;
-`;
-const ProductInput = styled.div`
-  margin: 20px;
-  width: 50%;
-  height: 40px;
-  /* background-color: black; */
+  border-radius: 50%;
+  background-color: #eedfae;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #e9967a;
-  border-radius: 20px;
-  flex: 1;
-  /* background-color: black; */
-  ${mobile({ margin: "20px" })}
+  margin-top: 20px;
+  margin-left: 20px;
+  cursor: pointer;
 `;
 const UnitList = () => {
   const location = useLocation();
   const Id = location.pathname.split("/")[2];
+  const navigate = useNavigate();
   //   console.log(parseInt("all"));
   //   const ID = parseInt(Id);
   const [pageCount, setpageCount] = useState(0);
@@ -232,9 +213,21 @@ const UnitList = () => {
     let currentPage = data.selected + 1;
     setPage2(currentPage);
   };
+
   return (
     <>
-      <BackArrow />
+      {Id === "all" ? (
+        <BackArrow item={"/"} />
+      ) : (
+        <Button
+          onClick={() => {
+            window.location.href = "/units/all";
+          }}
+        >
+          <ArrowBackIcon />
+        </Button>
+      )}
+
       {Id === "all" && (
         <Combobox
           style={{ width: "30%", margin: "auto" }}
@@ -266,22 +259,27 @@ const UnitList = () => {
                 <Title> {unit.title}</Title>
                 <Desc>{unit.description}</Desc>
                 <Email>
-                  <EmailIcon sx={{ width: 17, height: 17 }} /> : {unit.email}
+                  <EmailIcon sx={{ width: 17, height: 17 }} /> :{" "}
+                  {unit.email ? unit.email : " _ "}
                 </Email>
-                <CategoryInfo>{unit.unit_category.title}</CategoryInfo>
-                <CategoryInfo>type : {unit.unit_category.type}</CategoryInfo>
+                <CategoryInfo>
+                  {unit.unit_category ? unit.unit_category.title : " _ "}
+                </CategoryInfo>
+                <CategoryInfo>
+                  type : {unit.unit_category ? unit.unit_category.type : " _ "}
+                </CategoryInfo>
                 {/* <Location>city: {city.name && city.name}</Location> */}
                 <Location>
                   <LocationOnIcon sx={{ width: 17, height: 17 }} /> :{" "}
-                  {unit.country && unit.country.name}
+                  {unit.country ? unit.country.name : " _ "}
                 </Location>
                 <WebSite>
                   <LanguageIcon sx={{ width: 17, height: 17 }} /> :{" "}
-                  {unit.web_site}
+                  {unit.web_site ? unit.web_site : " _ "}
                 </WebSite>
                 <Mobile>
                   <PhoneIcon sx={{ width: 17, height: 17 }} /> :{" "}
-                  {unit.mobile && unit.mobile[0]}
+                  {unit.mobile ? unit.mobile[0] : " _ "}
                 </Mobile>
                 <Info>
                   <Icon>
@@ -388,7 +386,7 @@ const UnitList = () => {
       <Container style={{ justifyContent: "center" }}>
         {/* <pre>{JSON.stringify(categories)} </pre>  */}
         {/* <pre>{JSON.stringify(value)} </pre>  */}
-        {Id != "all" && units.length != 0 && !value
+        {Id !== "all" && units.length !== 0 && !value
           ? units.map((unit) => {
               return (
                 <ContainerInfo>
@@ -431,7 +429,18 @@ const UnitList = () => {
             })
           : ""}
       </Container>
-      {Id != "all" && units.length != 0 && !value ? (
+
+      {Id !== "all" && units.length === 0 && !value ? (
+        <NotFoundContainer>
+          <ErrorOutlineIcon
+            sx={{ width: "40px", height: "40px", color: "red" }}
+          />
+          <NotFoundInfo>واحدی یافت نشد</NotFoundInfo>
+        </NotFoundContainer>
+      ) : (
+        ""
+      )}
+      {Id !== "all" && units.length !== 0 && !value ? (
         <PaginationStyle>
           <ReactPaginate
             previousLabel={"previous"}
@@ -456,6 +465,8 @@ const UnitList = () => {
       ) : (
         ""
       )}
+
+      <Footer />
     </>
   );
 };

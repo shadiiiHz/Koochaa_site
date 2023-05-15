@@ -373,40 +373,19 @@ export const getByTitle = async (dispatch, title, page) => {
   }
 };
 
-////////////////userlist/////////////////
-export const getUserList = async (dispatch, configuration, page) => {
-  dispatch(getUserListStart());
+//////////get 20 units//////////////
+export const getTwentyUnits = async (dispatch) => {
+  dispatch(getUnitStart());
   try {
-    const res = await publicRequest2.get(`/users?page=${page}`, configuration);
-    console.log(res.data.body.data);
-    dispatch(getUserListSuccess(res.data.body.data));
-    dispatch(getPageUserList(res.data.body.last_page));
-  } catch (err) {
-    dispatch(getUserListFailure());
-  }
-};
-export const getByGender = async (dispatch, configuration, gender, page) => {
-  // dispatch(clear());
-  dispatch(getTypeStart());
-  try {
-    if (page == 1) {
-      const res = await publicRequest2.get(
-        `/users?gender=${gender}&page=1`,
-        configuration
+
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/user/units/middle-page/search?per_page=20`
       );
       console.log(res.data.body.data);
-      dispatch(getTypeSuccess(res.data.body.data));
-      dispatch(getPageType(res.data.body.last_page));
-    } else {
-      const res = await publicRequest2.get(
-        `/users?gender=${gender}&page=${page}`,
-        configuration
-      );
-      console.log(res.data.body.data);
-      dispatch(getTypeSuccess(res.data.body.data));
-      dispatch(getPageType(res.data.body.last_page));
-    }
+      dispatch(getUnitSuccess(res.data.body.data));
+     
+ 
   } catch (err) {
-    dispatch(getTypeFailure());
+    dispatch(getUnitFailure());
   }
 };

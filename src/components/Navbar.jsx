@@ -16,7 +16,7 @@ const Container = styled.div`
   width: 100%;
   height: 60px;
   background-color: white;
-  ${mobile({ height: "150px" })}
+  ${mobile({ height: "150px" , backgroundColor:"#fff8f8" })}
 `;
 
 const Wrapper = styled.div`
@@ -47,6 +47,7 @@ const SearchContainer = styled.div`
   margin-left: 25px;
   padding: 5px;
   border-radius: 8px;
+  ${mobile({display: "none"})}
 `;
 
 const Input = styled.input`
@@ -57,7 +58,7 @@ const Input = styled.input`
 const Center = styled.div`
   flex: 1;
   text-align: center;
-  ${mobile({ margin: "40px 0px" })}
+  ${mobile({ margin: "10px 0px" })}
 `;
 
 const Logo = styled.h1`
@@ -71,7 +72,7 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  ${mobile({ flex: 2, justifyContent: "center" })}
+  ${mobile({ flex: 2, justifyContent: "center", flexDirection: "column"})}
 `;
 const Suggestions = styled.div`
   opacity: 0;
@@ -92,6 +93,7 @@ const Suggestions = styled.div`
   max-height: 300px;
   font-family: "Vazir", sans-serif;
   cursor: pointer;
+  ${mobile({fontSize: "13px", position: "absolute",right: "10%",left: "17%", fontWeight: "bold"})};
 `;
 const Suggestion = styled.div`
   flex: 1;
@@ -103,13 +105,14 @@ const Suggestion = styled.div`
   &:hover {
     background-color: #fff8dc;
   }
+  ${mobile({marginBottom: "3px"})};
 `;
 const MenuItems = styled.div`
   font-size: 14px;
   cursor: pointer;
   margin-left: 25px;
 
-  ${mobile({ fontSize: "12px", marginLeft: "10px" })}
+  ${mobile({ fontSize: "12px", marginLeft: "10px" , marginBottom: "7px" })}
 `;
 const SearchBar = styled.div`
   &:hover ${Suggestions} {
